@@ -100,9 +100,13 @@ module.exports = {
     const user = await User.find(); //seleciona tudo do usuário
     res.json(user);
   },
+
   async find(req, res) {
     const { _id } = req.params;
-    const user = await User.findOne({ _id }); //seleciona o equipamento correspondente ao ID
-    res.json(user);
+    const user = await User.findById({ _id }, "-password"); //seleciona o usuario correspondente ao ID
+    if (!user) {
+      return res.status(404).json({ msg: "Usuário não encontrado!" });
+    }
+    res.status(200).json({ user });
   },
 };
